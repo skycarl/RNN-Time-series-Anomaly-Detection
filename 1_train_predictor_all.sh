@@ -21,32 +21,32 @@ declare -a nyc_taxi_filenames=("nyc_taxi.pkl")
 
 for idx in "${ecg_filenames[@]}"
 do
-	ipython 1_train_predictor.py -- --data ecg --filename "$idx" --emsize 128 --nhid 128 --save_fig --resume --epoch 600
+	python3 1_train_predictor.py -- --data ecg --filename "$idx" --emsize 128 --nhid 128 --save_fig --resume --epoch 600
 done
 
 for idx in "${respiration_filenames[@]}"
 do
-	ipython 1_train_predictor.py -- --data respiration --filename "$idx" --emsize 128 --nhid 128 --save_fig --resume --epoch 600
+	python3 1_train_predictor.py -- --data respiration --filename "$idx" --emsize 128 --nhid 128 --save_fig --resume --epoch 600
 done
 
 for idx in "${space_shuttle_filenames[@]}"
 do
-	ipython 1_train_predictor.py -- --data space_shuttle --filename "$idx" --emsize 128 --nhid 128 --save_fig --resume --epoch 600
+	python3 1_train_predictor.py -- --data space_shuttle --filename "$idx" --emsize 128 --nhid 128 --save_fig --resume --epoch 600
 done
 
 for idx in "${gesture_filenames[@]}"
 do
-	ipython 1_train_predictor.py -- --data gesture --filename "$idx" --emsize 128 --nhid 128 --save_fig --resume --epoch 600
+	python3 1_train_predictor.py -- --data gesture --filename "$idx" --emsize 128 --nhid 128 --save_fig --resume --epoch 600
 done
 
 for idx in "${power_demand_filenames[@]}"
 do
-	ipython 1_train_predictor.py -- --data power_demand --filename "$idx" --emsize 128 --nhid 128 --save_fig --resume --epoch 600
+	python3 1_train_predictor.py -- --data power_demand --filename "$idx" --emsize 128 --nhid 128 --save_fig --resume --epoch 600
 done
 
 for idx in "${nyc_taxi_filenames[@]}"
 do
-	ipython 1_train_predictor.py -- --data nyc_taxi --filename "$idx" --emsize 128 --nhid 128 --save_fig --resume --epoch 600
+	python3 1_train_predictor.py -- --data nyc_taxi --filename "$idx" --emsize 128 --nhid 128 --save_fig --resume --epoch 600
 
 
 
