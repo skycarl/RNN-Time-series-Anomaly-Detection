@@ -82,7 +82,7 @@ and Label all the abnormality points in the dataset.
 __1. Time-series prediction:__
 Train and save RNN based time-series prediction model on a single time-series trainset
 ```
-    python 1_train_predictor.py --data ecg --filename chfdb_chf14_45590.pkl
+    python 1_train_predictor.py --data ecg --filename chfdb_chf13_45590.pkl
     python 1_train_predictor.py --data nyc_taxi --filename nyc_taxi.pkl
 ```
 Train multiple models using bash script
@@ -95,7 +95,7 @@ __2. Anomaly detection:__
 Fit multivariate gaussian distribution and
 calculate anomaly scores on a single time-series testset
 ```
-    python 2_anomaly_detection.py --data ecg --filename chfdb_chf14_45590.pkl --prediction_window 10
+    python 2_anomaly_detection.py --data ecg --filename chfdb_chf13_45590.pkl --prediction_window 10
     python 2_anomaly_detection.py --data nyc_taxi --filename nyc_taxi.pkl --prediction_window 10
 ```
 Test multiple models using bash script
