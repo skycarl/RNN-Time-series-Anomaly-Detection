@@ -30,16 +30,23 @@ def main():
                         help='compensate anomaly score using anomaly score esimation')
     parser.add_argument('--beta', type=float, default=1.0,
                         help='beta value for f-beta score')
+    parser.add_argument('--device', type=str, default='cuda',
+                        help='cuda or cpu')
 
     args_ = parser.parse_args()
     print('-' * 89)
     print("=> loading checkpoint ")
-    checkpoint = torch.load(str(Path('save',args_.data,'checkpoint',args_.filename).with_suffix('.pth')))
+    if args_.device == 'cpu':
+        checkpoint = torch.load(str(Path('save',args_.data,'checkpoint',args_.filename).with_suffix('.pth')),
+                                map_location=torch.device('cpu'))
+    else:
+        checkpoint = torch.load(str(Path('save',args_.data,'checkpoint',args_.filename).with_suffix('.pth')))
     args = checkpoint['args']
     args.prediction_window_size= args_.prediction_window_size
     args.beta = args_.beta
     args.save_fig = args_.save_fig
     args.compensate = args_.compensate
+    args.device = args_.device
     print("=> loaded checkpoint")
 
     # Set the random seed manually for reproducibility.
