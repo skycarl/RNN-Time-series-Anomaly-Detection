@@ -33,6 +33,12 @@ def main():
     parser.add_argument('--device', type=str, default='cuda',
                         help='cuda or cpu')
 
+    # These don't get used in prediction, but adding them here for a quick hack for the runner script
+    parser.add_argument('--noise_ratio', type=float, default=0.05,
+                        help='noise ratio (float between 0 and 1)')
+    parser.add_argument('--noise_interval', type=float, default=0.0005,
+                        help='noise interval')
+
     args_ = parser.parse_args()
     print('-' * 89)
     print("=> loading checkpoint ")

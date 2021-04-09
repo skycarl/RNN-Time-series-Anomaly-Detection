@@ -16,6 +16,10 @@ run_parser.add_argument('--data', type=str, default='ecg', choices=['ecg', 'gest
                         help='type of the dataset (ecg, gesture, power_demand, space_shuttle, respiration, nyc_taxi')
 run_parser.add_argument('--device', type=str, default='cuda', choices=['cuda', 'cpu'],
                         help='cuda or cpu')
+run_parser.add_argument('--noise_ratio', type=float, default=0.05,
+                        help='noise ratio (float between 0 and 1)')
+run_parser.add_argument('--noise_interval', type=float, default=0.0005,
+                        help='noise interval')
 run_args = run_parser.parse_args()
 
 # Run training, if specified

@@ -67,6 +67,10 @@ def main():
                         action="store_true")
     parser.add_argument('--prediction_window_size', type=int, default=10,
                         help='prediction_window_size')
+    parser.add_argument('--noise_ratio', type=float, default=0.05,
+                        help='noise ratio (float between 0 and 1)')
+    parser.add_argument('--noise_interval', type=float, default=0.0005,
+                        help='noise interval')
     args = parser.parse_args()
     # Set the random seed manually for reproducibility.
     torch.manual_seed(args.seed)
@@ -76,7 +80,8 @@ def main():
     # Load data
     ###############################################################################
     TimeseriesData = preprocess_data.PickleDataLoad(data_type=args.data, filename=args.filename,
-                                                    augment_test_data=args.augment)
+                                                    augment_test_data=args.augment, noise_ratio=args.noise_ratio,
+                                                    noise_interval=args.noise_interval)
     train_dataset = TimeseriesData.batchify(args,TimeseriesData.trainData, args.batch_size)
     test_dataset = TimeseriesData.batchify(args,TimeseriesData.testData, args.eval_batch_size)
     gen_dataset = TimeseriesData.batchify(args,TimeseriesData.testData, 1)
