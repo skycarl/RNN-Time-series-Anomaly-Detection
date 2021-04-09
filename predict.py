@@ -32,12 +32,16 @@ def main():
                         help='beta value for f-beta score')
     parser.add_argument('--device', type=str, default='cuda',
                         help='cuda or cpu')
+    parser.add_argument('--save_str', type=str, default=None,
+                        help='subdir in result/ to store results in')
 
-    # These don't get used in prediction, but adding them here for a quick hack for the runner script
+    # Unused arguments for a quick solution for multilayered argparsing
     parser.add_argument('--noise_ratio', type=float, default=0.05,
                         help='noise ratio (float between 0 and 1)')
     parser.add_argument('--noise_interval', type=float, default=0.0005,
                         help='noise interval')
+    parser.add_argument('--session_type', type=str, default='both', choices=['train', 'infer', 'both'],
+                        help='type session to run (train, infer, or both')
 
     args_ = parser.parse_args()
     print('-' * 89)
@@ -53,6 +57,7 @@ def main():
     args.save_fig = args_.save_fig
     args.compensate = args_.compensate
     args.device = args_.device
+    args.save_str = args_.save_str
     print("=> loaded checkpoint")
 
     # Set the random seed manually for reproducibility.
@@ -200,7 +205,10 @@ def main():
 
 
     print('=> saving the results as pickle extensions')
-    save_dir = Path('result', args.data, args.filename).with_suffix('')
+    if args.save_str is None:
+        save_dir = Path('result', args.data, args.filename).with_suffix('')
+    else:
+        save_dir = Path('result', args.save_str, args.data, args.filename).with_suffix('')
     save_dir.mkdir(parents=True, exist_ok=True)
     pickle.dump(targets, open(str(save_dir.joinpath('target.pkl')),'wb'))
     pickle.dump(mean_predictions, open(str(save_dir.joinpath('mean_predictions.pkl')),'wb'))

@@ -71,6 +71,13 @@ def main():
                         help='noise ratio (float between 0 and 1)')
     parser.add_argument('--noise_interval', type=float, default=0.0005,
                         help='noise interval')
+    parser.add_argument('--save_str', type=str, default=None,
+                        help='subdir in result/ to store results in')
+
+    # Unused arguments for a quick solution for multilayered argparsing    
+    parser.add_argument('--session_type', type=str, default='both', choices=['train', 'infer', 'both'],
+                        help='type session to run (train, infer, or both')
+
     args = parser.parse_args()
     # Set the random seed manually for reproducibility.
     torch.manual_seed(args.seed)
@@ -175,7 +182,11 @@ def main():
             plt.legend()
             plt.tight_layout()
             plt.text(startPoint-500+10, target.min(), 'Epoch: '+str(epoch),fontsize=15)
-            save_dir = Path('result',args.data,args.filename).with_suffix('').joinpath('fig_prediction')
+
+            if args.save_str is None:
+                save_dir = Path('result',args.data,args.filename).with_suffix('').joinpath('fig_prediction')
+            else:
+                save_dir = Path('result', args.save_str, args.data, args.filename).with_suffix('').joinpath('fig_prediction')
             save_dir.mkdir(parents=True,exist_ok=True)
             plt.savefig(save_dir.joinpath('fig_epoch'+str(epoch)).with_suffix('.png'))
             #plt.show()
@@ -302,7 +313,12 @@ def main():
     # Loop over epochs.
     if args.resume or args.pretrained:
         print("=> loading checkpoint ")
-        checkpoint = torch.load(Path('save', args.data, 'checkpoint', args.filename).with_suffix('.pth'))
+        if args.save_str is None:
+            ckpt_path = Path('save', args.data, 'checkpoint', args.filename).with_suffix('.pth')
+        else:
+            ckpt_path = Path('save', args.save_str, args.data, 'checkpoint', args.filename).with_suffix('.pth')
+
+        checkpoint = torch.load(ckpt_path)
         args, start_epoch, best_val_loss = model.load_checkpoint(args,checkpoint,feature_dim)
         optimizer.load_state_dict((checkpoint['optimizer']))
         del checkpoint

@@ -20,6 +20,8 @@ run_parser.add_argument('--noise_ratio', type=float, default=0.05,
                         help='noise ratio (float between 0 and 1)')
 run_parser.add_argument('--noise_interval', type=float, default=0.0005,
                         help='noise interval')
+run_parser.add_argument('--save_str', type=str, default=None,
+                        help='subdir in result/ to store results in')
 run_args = run_parser.parse_args()
 
 # Run training, if specified
@@ -29,7 +31,8 @@ if run_args.session_type in ['train', 'both']:
 
     for pkl in train_files:
         print(f'----- Training on {pkl} -----')
-        sys.argv.extend(['--data', run_args.data, '--filename', pkl, '--save_fig', '--device', run_args.device])
+        sys.argv.extend(['--data', run_args.data, '--filename', pkl, '--save_fig', '--device', run_args.device,
+                         '--save_str', run_args.save_str])
         train_main()
 
 # Run inference, if specified
@@ -39,5 +42,6 @@ if run_args.session_type in ['infer', 'both']:
     
     for pkl in test_files:
         print(f'----- Running inference on {pkl} -----')
-        sys.argv.extend(['--data', run_args.data, '--filename', pkl, '--save_fig', '--device', run_args.device])
+        sys.argv.extend(['--data', run_args.data, '--filename', pkl, '--save_fig', '--device', run_args.device,
+                         '--save_str', run_args.save_str])
         predict_main()
