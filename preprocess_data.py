@@ -18,17 +18,19 @@ def reconstruct(seqData,mean,std):
     return seqData*std+mean
 
 class PickleDataLoad(object):
-    def __init__(self, data_type, filename, augment_test_data=True):
+    def __init__(self, data_type, filename, augment_test_data=True, noise_ratio=0.05, noise_interval=0.0005):
         self.augment_test_data=augment_test_data
         self.trainData, self.trainLabel = self.preprocessing(Path('dataset',data_type,'labeled','train',filename),train=True)
         self.testData, self.testLabel = self.preprocessing(Path('dataset',data_type,'labeled','test',filename),train=False)
+        self.noise_ratio = noise_ratio
+        self.noise_interval = noise_interval
 
-    def augmentation(self,data,label,noise_ratio=0.05,noise_interval=0.0005,max_length=100000):
+    def augmentation(self, data, label, max_length=100000):
         noiseSeq = torch.randn(data.size())
         augmentedData = data.clone()
         augmentedLabel = label.clone()
-        for i in np.arange(0, noise_ratio, noise_interval):
-            scaled_noiseSeq = noise_ratio * self.std.expand_as(data) * noiseSeq
+        for i in np.arange(0, self.noise_ratio, self.noise_interval):
+            scaled_noiseSeq = self.noise_ratio * self.std.expand_as(data) * noiseSeq
             augmentedData = torch.cat([augmentedData, data + scaled_noiseSeq], dim=0)
             augmentedLabel = torch.cat([augmentedLabel, label])
             if len(augmentedData) > max_length:
