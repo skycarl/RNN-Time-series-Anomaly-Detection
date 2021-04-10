@@ -7,6 +7,7 @@ import glob
 import argparse
 from train import main as train_main
 from predict import main as predict_main
+from pathlib import Path
 
 
 run_parser = argparse.ArgumentParser(description='Run training, inference, or both')
@@ -23,6 +24,18 @@ run_parser.add_argument('--noise_interval', type=float, default=0.0005,
 run_parser.add_argument('--save_str', type=str, default=None,
                         help='subdir in result/ to store results in')
 run_args = run_parser.parse_args()
+
+if run_args.session_type in ['train', 'both']:
+    arg_path = Path('save', run_args.save_str)
+    arg_path.mkdir(parents=True, exist_ok=True)
+    with open(os.path.join(arg_path, 'experiment_args.txt'), 'w') as f:
+        f.write('\n'.join(sys.argv[1:]))
+
+if run_args.session_type in ['infer', 'both']:
+    arg_path = Path('result', run_args.save_str)
+    arg_path.mkdir(parents=True, exist_ok=True)
+    with open(os.path.join(arg_path, 'experiment_args.txt'), 'w') as f:
+        f.write('\n'.join(sys.argv[1:]))
 
 # Run training, if specified
 if run_args.session_type in ['train', 'both']:

@@ -7,6 +7,8 @@ from torch import optim
 from matplotlib import pyplot as plt
 from pathlib import Path
 from anomalyDetector import fit_norm_distribution_param
+import sys
+import os
 
 def main():
     """Run training"""
@@ -79,6 +81,12 @@ def main():
                         help='type session to run (train, infer, or both')
 
     args = parser.parse_args()
+
+    arg_path = Path('save', args.save_str)
+    arg_path.mkdir(parents=True, exist_ok=True)
+    with open(os.path.join(arg_path, 'train_args.txt'), 'w') as f:
+        f.write('\n'.join(sys.argv[1:]))
+
     # Set the random seed manually for reproducibility.
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed(args.seed)

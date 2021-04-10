@@ -11,6 +11,8 @@ from sklearn.model_selection import GridSearchCV
 from anomalyDetector import fit_norm_distribution_param
 from anomalyDetector import anomalyScore
 from anomalyDetector import get_precision_recall
+import sys
+import os
 
 def main():
     """Run inference.""" 
@@ -44,6 +46,12 @@ def main():
                         help='type session to run (train, infer, or both')
 
     args_ = parser.parse_args()
+
+    arg_path = Path('result', args_.save_str)
+    arg_path.mkdir(parents=True, exist_ok=True)
+    with open(os.path.join(arg_path, 'predict_args.txt'), 'w') as f:
+        f.write('\n'.join(sys.argv[1:]))
+
     print('-' * 89)
     print("=> loading checkpoint ")
     if args_.device == 'cpu':
