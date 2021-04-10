@@ -26,20 +26,13 @@ def main():
                             help='subdir to store results in')
     run_args = run_parser.parse_args()
 
+    # Run training, if specified
     if run_args.session_type in ['train', 'both']:
         arg_path = Path('save', run_args.save_str)
         arg_path.mkdir(parents=True, exist_ok=True)
         with open(os.path.join(arg_path, 'experiment_args.txt'), 'w') as f:
             f.write('\n'.join(sys.argv[1:]))
 
-    if run_args.session_type in ['infer', 'both']:
-        arg_path = Path('result', run_args.save_str)
-        arg_path.mkdir(parents=True, exist_ok=True)
-        with open(os.path.join(arg_path, 'experiment_args.txt'), 'w') as f:
-            f.write('\n'.join(sys.argv[1:]))
-
-    # Run training, if specified
-    if run_args.session_type in ['train', 'both']:
         train_paths = glob.glob(os.path.join(f'dataset/{run_args.data}/labeled/train', '*.pkl'))
         train_files = list(map(os.path.basename, train_paths))
 
@@ -48,15 +41,28 @@ def main():
             sys.argv.extend(['--filename', pkl])
             train_main()
 
+            idx = sys.argv.index('--filename')
+            del sys.argv[idx+1]
+            del sys.argv[idx]
+
     # Run inference, if specified
     if run_args.session_type in ['infer', 'both']:
         test_paths = glob.glob(os.path.join(f'dataset/{run_args.data}/labeled/test', '*.pkl'))
         test_files = list(map(os.path.basename, test_paths))
+
+        arg_path = Path('result', run_args.save_str)
+        arg_path.mkdir(parents=True, exist_ok=True)
+        with open(os.path.join(arg_path, 'experiment_args.txt'), 'w') as f:
+            f.write('\n'.join(sys.argv[1:]))
         
         for pkl in test_files:
             print(f'----- Running inference on {pkl} -----')
             sys.argv.extend(['--filename', pkl])
             predict_main()
+
+            idx = sys.argv.index('--filename')
+            del sys.argv[idx+1]
+            del sys.argv[idx]
 
 if __name__ == '__main__':
     main()

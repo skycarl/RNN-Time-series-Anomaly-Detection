@@ -24,5 +24,9 @@ ratios = np.linspace(0.1, 1, 10)
 
 for rat in ratios:
     print(f'----- Running noise_ratio = {rat} -----')
-    sys.argv.extend(['--noise_ratio', str(rat)])
+    sys.argv.extend(['--noise_ratio', str(np.round(rat, 4))])
     screen_main()
+
+    idx = sys.argv.index('--noise_ratio')
+    del sys.argv[idx+1]
+    del sys.argv[idx]
