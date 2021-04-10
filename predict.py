@@ -35,15 +35,13 @@ def main():
     parser.add_argument('--device', type=str, default='cuda',
                         help='cuda or cpu')
     parser.add_argument('--save_str', type=str, default=None,
-                        help='subdir in result/ to store results in')
-
-    # Unused arguments for a quick solution for multilayered argparsing
+                        help='subdir to store results in')
+    parser.add_argument('--session_type', type=str, default='both', choices=['train', 'infer', 'both'],
+                            help='type session to run (train, infer, or both')
     parser.add_argument('--noise_ratio', type=float, default=0.05,
                         help='noise ratio (float between 0 and 1)')
     parser.add_argument('--noise_interval', type=float, default=0.0005,
                         help='noise interval')
-    parser.add_argument('--session_type', type=str, default='both', choices=['train', 'infer', 'both'],
-                        help='type session to run (train, infer, or both')
 
     args_ = parser.parse_args()
 

@@ -74,11 +74,9 @@ def main():
     parser.add_argument('--noise_interval', type=float, default=0.0005,
                         help='noise interval')
     parser.add_argument('--save_str', type=str, default=None,
-                        help='subdir in result/ to store results in')
-
-    # Unused arguments for a quick solution for multilayered argparsing    
+                        help='subdir to store results in')
     parser.add_argument('--session_type', type=str, default='both', choices=['train', 'infer', 'both'],
-                        help='type session to run (train, infer, or both')
+                            help='type session to run (train, infer, or both')
 
     args = parser.parse_args()
 
