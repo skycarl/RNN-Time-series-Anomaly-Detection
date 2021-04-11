@@ -26,7 +26,7 @@ def main():
                         help='type of the dataset (ecg, gesture, power_demand, space_shuttle, respiration, nyc_taxi')
     parser.add_argument('--filename', type=str, default='chfdb_chf13_45590.pkl',
                         help='filename of the dataset')
-    parser.add_argument('--save_fig', action='store_true',
+    parser.add_argument('--save_fig', action='store_true', default=True,
                         help='save results as figures')
     parser.add_argument('--compensate', action='store_true',
                         help='compensate anomaly score using anomaly score esimation')
@@ -52,11 +52,17 @@ def main():
 
     print('-' * 89)
     print("=> loading checkpoint ")
-    if args_.device == 'cpu':
-        checkpoint = torch.load(str(Path('save',args_.data,'checkpoint',args_.filename).with_suffix('.pth')),
-                                map_location=torch.device('cpu'))
+
+    if args_.save_str is None:
+        load_str = str(Path('save',args_.data,'checkpoint', args_.filename).with_suffix('.pth'))
     else:
-        checkpoint = torch.load(str(Path('save',args_.data,'checkpoint',args_.filename).with_suffix('.pth')))
+        load_str = str(Path('save', args_.save_str, args_.data,'checkpoint', args_.filename).with_suffix('.pth'))
+    
+    if args_.device == 'cpu':
+        checkpoint = torch.load(load_str, map_location=torch.device('cpu'))
+    else:
+        checkpoint = torch.load(load_str)
+    
     args = checkpoint['args']
     args.prediction_window_size= args_.prediction_window_size
     args.beta = args_.beta
@@ -164,7 +170,10 @@ def main():
 
 
             if args.save_fig:
-                save_dir = Path('result',args.data,args.filename).with_suffix('').joinpath('fig_detection')
+                if args.save_str is None:
+                    save_dir = Path('result', args.data, args.filename).with_suffix('').joinpath('fig_detection')
+                else:
+                    save_dir = Path('result', args.save_str, args.data, args.filename).with_suffix('').joinpath('fig_detection')
                 save_dir.mkdir(parents=True,exist_ok=True)
                 plt.plot(precision.cpu().numpy(),label='precision')
                 plt.plot(recall.cpu().numpy(),label='recall')
@@ -207,7 +216,7 @@ def main():
 
     except KeyboardInterrupt:
         print('-' * 89)
-        print('Exiting from training early')
+        print('Exiting from inference early')
 
 
     print('=> saving the results as pickle extensions')
