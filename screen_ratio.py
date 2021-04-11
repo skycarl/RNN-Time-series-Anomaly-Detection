@@ -21,7 +21,7 @@ screen_args = screen_parser.parse_args()
 ratios = np.linspace(0.1, 1, 10)
 
 for rat in ratios:
-    print(f'----- Running noise_ratio = {rat} -----')
+    print(f'----- Running noise_ratio = {str(np.round(rat, 4))} -----')
     sys.argv.extend(['--noise_ratio', str(np.round(rat, 4)), '--save_str', f'nr_{str(np.round(rat, 4))}'])
     screen_main()
 
