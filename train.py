@@ -80,7 +80,7 @@ def main():
 
     args = parser.parse_args()
 
-    arg_path = Path('save', args.save_str)
+    arg_path = Path('save', args.save_str, args.save_str)
     arg_path.mkdir(parents=True, exist_ok=True)
     with open(os.path.join(arg_path, 'train_args.txt'), 'w') as f:
         f.write('\n'.join(sys.argv[1:]))
@@ -192,7 +192,7 @@ def main():
             if args.save_str is None:
                 save_dir = Path('result',args.data,args.filename).with_suffix('').joinpath('fig_prediction')
             else:
-                save_dir = Path('result', args.save_str, args.data, args.filename).with_suffix('').joinpath('fig_prediction')
+                save_dir = Path('result', args.data, args.save_str, args.filename).with_suffix('').joinpath('fig_prediction')
             save_dir.mkdir(parents=True,exist_ok=True)
             plt.savefig(save_dir.joinpath('fig_epoch'+str(epoch)).with_suffix('.png'))
             #plt.show()
@@ -322,7 +322,7 @@ def main():
         if args.save_str is None:
             ckpt_path = Path('save', args.data, 'checkpoint', args.filename).with_suffix('.pth')
         else:
-            ckpt_path = Path('save', args.save_str, args.data, 'checkpoint', args.filename).with_suffix('.pth')
+            ckpt_path = Path('save', args.data, args.save_str, 'checkpoint', args.filename).with_suffix('.pth')
 
         checkpoint = torch.load(ckpt_path)
         args, start_epoch, best_val_loss = model.load_checkpoint(args,checkpoint,feature_dim)

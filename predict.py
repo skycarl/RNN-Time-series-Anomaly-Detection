@@ -35,6 +35,8 @@ def main():
     parser.add_argument('--device', type=str, default='cuda',
                         help='cuda or cpu')
     parser.add_argument('--save_str', type=str, default=None,
+                        help='subdir that the saved checkpoint comes from')
+    parser.add_argument('--res_str', type=str, default=None,
                         help='subdir to store results in')
     parser.add_argument('--session_type', type=str, default='both', choices=['train', 'infer', 'both'],
                             help='type session to run (train, infer, or both')
@@ -42,6 +44,8 @@ def main():
                         help='noise ratio (float between 0 and 1)')
     parser.add_argument('--noise_interval', type=float, default=0.0005,
                         help='noise interval')
+    parser.add_argument('--seed', type=int, default=1111,
+                        help='random seed')
 
     args_ = parser.parse_args()
 
@@ -56,7 +60,7 @@ def main():
     if args_.save_str is None:
         load_str = str(Path('save',args_.data,'checkpoint', args_.filename).with_suffix('.pth'))
     else:
-        load_str = str(Path('save', args_.save_str, args_.data,'checkpoint', args_.filename).with_suffix('.pth'))
+        load_str = str(Path('save', args_.data, args_.save_str, 'checkpoint', args_.filename).with_suffix('.pth'))
     
     if args_.device == 'cpu':
         checkpoint = torch.load(load_str, map_location=torch.device('cpu'))
@@ -70,11 +74,14 @@ def main():
     args.compensate = args_.compensate
     args.device = args_.device
     args.save_str = args_.save_str
+    args.res_str = args_.res_str
+    args.seed = args_.seed
     print("=> loaded checkpoint")
 
     # Set the random seed manually for reproducibility.
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed(args.seed)
+    print(f'Random seed = {args.seed}')
 
     ###############################################################################
     # Load data
@@ -170,10 +177,10 @@ def main():
 
 
             if args.save_fig:
-                if args.save_str is None:
+                if args.res_str is None:
                     save_dir = Path('result', args.data, args.filename).with_suffix('').joinpath('fig_detection')
                 else:
-                    save_dir = Path('result', args.save_str, args.data, args.filename).with_suffix('').joinpath('fig_detection')
+                    save_dir = Path('result', args.data, args.save_str, args.res_str, args.filename).with_suffix('').joinpath('fig_detection')
                 save_dir.mkdir(parents=True,exist_ok=True)
                 plt.plot(precision.cpu().numpy(),label='precision')
                 plt.plot(recall.cpu().numpy(),label='recall')
@@ -220,10 +227,10 @@ def main():
 
 
     print('=> saving the results as pickle extensions')
-    if args.save_str is None:
+    if args.res_str is None:
         save_dir = Path('result', args.data, args.filename).with_suffix('')
     else:
-        save_dir = Path('result', args.save_str, args.data, args.filename).with_suffix('')
+        save_dir = Path('result', args.data, args.save_str, args.res_str, args.filename).with_suffix('')
     save_dir.mkdir(parents=True, exist_ok=True)
     pickle.dump(targets, open(str(save_dir.joinpath('target.pkl')),'wb'))
     pickle.dump(mean_predictions, open(str(save_dir.joinpath('mean_predictions.pkl')),'wb'))
