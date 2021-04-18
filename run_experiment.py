@@ -28,6 +28,7 @@ def main():
                         help='subdir to store results in')
     run_parser.add_argument('--seed', type=int, default=1111,
                         help='random seed')
+    run_parser.add_argument('--runs', type=int, default='5', help='Number of runs')
     run_args = run_parser.parse_args()
 
     # Run training, if specified

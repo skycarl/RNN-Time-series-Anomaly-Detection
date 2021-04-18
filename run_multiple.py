@@ -18,7 +18,7 @@ screen_parser.add_argument('--noise_interval', type=float, default=0.0005,
                         help='noise interval')
 screen_parser.add_argument('--noise_ratio', type=float, default=0.05,
                             help='noise ratio (float between 0 and 1)')
-screen_parser.add_argument('--runs', type=str, default='10', help='Number of runs')
+screen_parser.add_argument('--runs', type=int, default='5', help='Number of runs')
 screen_args = screen_parser.parse_args()
 
 for n in range(int(screen_args.runs)):

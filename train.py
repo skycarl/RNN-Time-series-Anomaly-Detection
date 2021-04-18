@@ -77,6 +77,7 @@ def main():
                         help='subdir to store results in')
     parser.add_argument('--session_type', type=str, default='both', choices=['train', 'infer', 'both'],
                             help='type session to run (train, infer, or both')
+    parser.add_argument('--runs', type=int, default='5', help='Number of runs')
 
     args = parser.parse_args()
 
