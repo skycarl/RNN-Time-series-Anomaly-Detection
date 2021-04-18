@@ -177,10 +177,10 @@ def main():
 
 
             if args.save_fig:
-                if args.res_str is None:
+                if args.save_str is None:
                     save_dir = Path('result', args.data, args.filename).with_suffix('').joinpath('fig_detection')
                 else:
-                    save_dir = Path('result', args.data, args.save_str, args.res_str, args.filename).with_suffix('').joinpath('fig_detection')
+                    save_dir = Path('result', args.data, args.save_str, args.filename).with_suffix('').joinpath('fig_detection')
                 save_dir.mkdir(parents=True,exist_ok=True)
                 plt.plot(precision.cpu().numpy(),label='precision')
                 plt.plot(recall.cpu().numpy(),label='recall')
@@ -227,10 +227,10 @@ def main():
 
 
     print('=> saving the results as pickle extensions')
-    if args.res_str is None:
+    if args.save_str is None:
         save_dir = Path('result', args.data, args.filename).with_suffix('')
     else:
-        save_dir = Path('result', args.data, args.save_str, args.res_str, args.filename).with_suffix('')
+        save_dir = Path('result', args.data, args.save_str, args.filename).with_suffix('')
     save_dir.mkdir(parents=True, exist_ok=True)
     pickle.dump(targets, open(str(save_dir.joinpath('target.pkl')),'wb'))
     pickle.dump(mean_predictions, open(str(save_dir.joinpath('mean_predictions.pkl')),'wb'))

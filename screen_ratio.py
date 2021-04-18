@@ -25,7 +25,6 @@ for rat in ratios:
     print(f'----- Running noise_ratio = {str(np.round(rat, 4))} -----')
     sys.argv.extend(['--noise_ratio', str(np.round(rat, 4)),
                      '--save_str', f'nr_{str(np.round(rat, 4))}',
-                     '--res_str', f'{screen_args.data}_run_{str(n)}',
                      '--seed', str(seed)])
     screen_main()
 
@@ -34,10 +33,6 @@ for rat in ratios:
     del sys.argv[idx]
 
     idx = sys.argv.index('--save_str')
-    del sys.argv[idx+1]
-    del sys.argv[idx]
-
-    idx = sys.argv.index('--res_str')
     del sys.argv[idx+1]
     del sys.argv[idx]
 
