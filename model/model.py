@@ -99,7 +99,7 @@ class RNNPredictor(nn.Module):
         if args.save_str is None:
             checkpoint_dir = Path('save',args.data,'checkpoint')
         else:
-            checkpoint_dir = Path('save', args.save_str, args.data, 'checkpoint')
+            checkpoint_dir = Path('save', args.data, args.save_str, 'checkpoint')
         checkpoint_dir.mkdir(parents=True,exist_ok=True)
         checkpoint = checkpoint_dir.joinpath(args.filename).with_suffix('.pth')
 
@@ -108,7 +108,7 @@ class RNNPredictor(nn.Module):
             if args.save_str is None: 
                 model_best_dir = Path('save',args.data,'model_best')
             else:
-                model_best_dir = Path('save', args.save_str, args.data, 'model_best')
+                model_best_dir = Path('save', args.data, args.save_str, 'model_best')
             model_best_dir.mkdir(parents=True,exist_ok=True)
 
             shutil.copyfile(checkpoint, model_best_dir.joinpath(args.filename).with_suffix('.pth'))
