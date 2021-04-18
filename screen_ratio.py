@@ -18,7 +18,7 @@ screen_parser.add_argument('--noise_interval', type=float, default=0.0005,
                         help='noise interval')
 screen_args = screen_parser.parse_args()
 
-ratios = np.linspace(0.1, 1, 10)
+ratios = np.linspace(0.0, 1, 11)
 
 for rat in ratios:
     print(f'----- Running noise_ratio = {str(np.round(rat, 4))} -----')
