@@ -49,7 +49,7 @@ def main():
 
     args_ = parser.parse_args()
 
-    arg_path = Path('result', args_.save_str)
+    arg_path = Path('result', args_.data, args_.save_str)
     arg_path.mkdir(parents=True, exist_ok=True)
     with open(os.path.join(arg_path, 'predict_args.txt'), 'w') as f:
         f.write('\n'.join(sys.argv[1:]))

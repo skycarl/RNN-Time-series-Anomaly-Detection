@@ -80,7 +80,7 @@ def main():
 
     args = parser.parse_args()
 
-    arg_path = Path('save', args.save_str, args.save_str)
+    arg_path = Path('save', args.data, args.save_str)
     arg_path.mkdir(parents=True, exist_ok=True)
     with open(os.path.join(arg_path, 'train_args.txt'), 'w') as f:
         f.write('\n'.join(sys.argv[1:]))
