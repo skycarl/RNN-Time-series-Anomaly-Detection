@@ -86,6 +86,7 @@ def main():
         f.write('\n'.join(sys.argv[1:]))
 
     # Set the random seed manually for reproducibility.
+    print(f'Training seed = {args.seed}')
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed(args.seed)
 

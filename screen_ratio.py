@@ -21,8 +21,11 @@ screen_args = screen_parser.parse_args()
 ratios = np.linspace(0.0, 1, 11)
 
 for rat in ratios:
+    seed = np.random.randint(1, 10000000)
     print(f'----- Running noise_ratio = {str(np.round(rat, 4))} -----')
-    sys.argv.extend(['--noise_ratio', str(np.round(rat, 4)), '--save_str', f'nr_{str(np.round(rat, 4))}'])
+    sys.argv.extend(['--noise_ratio', str(np.round(rat, 4)),
+                     '--save_str', f'nr_{str(np.round(rat, 4))}',
+                     '--seed', str(seed)])
     screen_main()
 
     idx = sys.argv.index('--noise_ratio')
@@ -30,5 +33,9 @@ for rat in ratios:
     del sys.argv[idx]
 
     idx = sys.argv.index('--save_str')
+    del sys.argv[idx+1]
+    del sys.argv[idx]
+
+    idx = sys.argv.index('--seed')
     del sys.argv[idx+1]
     del sys.argv[idx]

@@ -81,7 +81,7 @@ def main():
     # Set the random seed manually for reproducibility.
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed(args.seed)
-    print(f'Random seed = {args.seed}')
+    print(f'Inference seed = {args.seed}')
 
     ###############################################################################
     # Load data
